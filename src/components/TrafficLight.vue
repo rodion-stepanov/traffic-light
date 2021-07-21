@@ -1,24 +1,25 @@
 <template>
-  <div class="traffic-light">
-    <div :class="['traffic-light__item',
+  <section class="traffic-light">
+    <div class="traffic-light__wrap">
+      <div :class="['traffic-light__item',
           redLight ? 'traffic-light__item_red_on' : 'traffic-light__item_red_off',
           redLight && pulse ? 'traffic-light__item_pulse_red' : '']">
-      <p :class="['traffic-light__timer', redLight ? 'traffic-light__timer_active' : '']">{{ timer + 1 }}</p>
-    </div>
-    <div
-        :class="['traffic-light__item',
+        <p :class="['traffic-light__timer', redLight ? 'traffic-light__timer_active' : '']">{{ timer }}</p>
+      </div>
+      <div
+          :class="['traffic-light__item',
          yellowLight ? 'traffic-light__item_yellow_on' : 'traffic-light__item_yellow_off',
          yellowLight && pulse ? 'traffic-light__item_pulse_yellow' : '']">
-      <p :class="['traffic-light__timer', yellowLight ? 'traffic-light__timer_active' : '']">{{ timer + 1 }}</p>
-    </div>
-    <div
-        :class="['traffic-light__item',
+        <p :class="['traffic-light__timer', yellowLight ? 'traffic-light__timer_active' : '']">{{ timer }}</p>
+      </div>
+      <div
+          :class="['traffic-light__item',
          greenLight ? 'traffic-light__item_green_on' : 'traffic-light__item_green_off',
          greenLight && pulse ? 'traffic-light__item_pulse_green' : '']">
-      <p :class="['traffic-light__timer', greenLight ? 'traffic-light__timer_active' : '']"> {{ timer + 1 }}</p>
+        <p :class="['traffic-light__timer', greenLight ? 'traffic-light__timer_active' : '']"> {{ timer }}</p>
+      </div>
     </div>
-
-  </div>
+  </section>
 </template>
 
 <script>
@@ -30,14 +31,29 @@ export default {
   data() {
     return {
       timer: 0,
-      pulse: false
+      pulse: false,
+      routeTimerId: null,
+      secondsTimerId: null,
     }
   },
   beforeRouteLeave(from, to, next) {
-    this.timer = 0;
+    this.timer = null;
     this.pulse = false;
+    clearTimeout(this.routeTimerId);
+    clearTimeout(this.secondsTimerId);
+    clearTimeout(this.secondsTimerId)
+    clearTimeout(this.secondsTimerId)
     next()
-    },
+  },
+  beforeMount() {
+    if (localStorage.timer && this.light === localStorage.light) {
+      this.timer = localStorage.timer;
+    }
+    if (localStorage.pulse && this.light === localStorage.light) {
+      this.pulse = localStorage.pulse;
+    }
+    localStorage.light = this.light
+  },
   methods: {
     routeReplace(route) {
       this.$router.replace(route).catch(err => {
@@ -46,37 +62,41 @@ export default {
         }
       });
     },
-    changeColor(route, time) {
-      setTimeout(this.routeReplace, time, route)
+    changeColor(route, time = 0) {
+      if (!time) {
+        console.log('time')
+        clearTimeout(this.routeTimerId)
+        this.routeReplace(route)
+      } else {
+        console.log('route')
+        this.routeTimerId = setTimeout(this.routeReplace, time, route)
+      }
     },
     timerHandler() {
       if (this.timer > 1) {
-        setTimeout(this.timerHandler, 1000);
-      }
-      if (this.timer < 4) {
-        this.pulse = true;
+        this.secondsTimerId = setTimeout(this.timerHandler, 1000);
       }
       this.timer--;
     },
     showTime(ms) {
-      this.timer = ms / 1000 - 1
-      setTimeout(this.timerHandler, 1000);
+      this.timer = ms / 1000
+      this.secondsTimerId = setTimeout(this.timerHandler, 1000);
     },
     routesHandler() {
       if (this.light === 'red') {
         const timeToYellow = 10000;
-        this.showTime(timeToYellow)
-        this.changeColor('yellow', timeToYellow)
+        this.showTime(timeToYellow);
+        this.changeColor('yellow', timeToYellow);
       }
       if (this.light === 'yellow') {
         const timeToGreen = 3000;
-        this.showTime(timeToGreen)
-        this.changeColor('green', timeToGreen)
+        this.showTime(timeToGreen);
+        this.changeColor('green', timeToGreen);
       }
       if (this.light === 'green') {
         const timeToRed = 15000;
-        this.showTime(timeToRed)
-        this.changeColor('red', timeToRed)
+        this.showTime(timeToRed);
+        this.changeColor('red', timeToRed);
       }
     }
   },
@@ -91,6 +111,27 @@ export default {
   watch: {
     $route() {
       this.routesHandler();
+    },
+    timer() {
+      localStorage.timer = this.timer;
+      if (this.timer === 0) {
+        clearTimeout(this.routeTimerId)
+        if (this.light === 'red') this.changeColor('yellow');
+        if (this.light === 'yellow') this.changeColor('green');
+        if (this.light === 'green') this.changeColor('red');
+      }
+      if (this.timer < 4) {
+        this.pulse = true;
+      }
+      if (this.timer >= 4) {
+        this.pulse = false;
+      }
+    },
+    pulse() {
+      localStorage.pulse = this.pulse;
+    },
+    light() {
+      localStorage.light = this.light
     }
   }
 }
@@ -98,18 +139,33 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap');
+
 .traffic-light {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   height: 100vh;
+  background: rgb(253, 255, 163);
+  background: linear-gradient(90deg, #94c1b7 0%, rgb(255, 255, 255) 50%, #94c1b7 100%);
+  align-items: center;
+}
+
+.traffic-light__wrap {
+  display: flex;
+  flex-direction: column;
+  background: #1f202d;
   justify-content: space-around;
   align-items: center;
+  border-radius: 20px;
+  padding: 10px;
+  height: 85%;
 }
 
 .traffic-light__item {
   position: relative;
   width: 25vh;
   border-radius: 100%;
+  box-sizing: border-box;
 }
 
 .traffic-light__item:after {
@@ -129,7 +185,8 @@ export default {
   top: 0;
   left: 0;
   transition: all .5s ease;
-  font-size: 2em;
+  font-size: 5em;
+  font-family: 'Black Ops One', cursive;
 }
 
 .traffic-light__timer_active {
@@ -137,7 +194,7 @@ export default {
 }
 
 .traffic-light__item_red_off {
-  background: hsl(0, 30%, 50%);
+  background: hsl(0, 100%, 15%);
 }
 
 .traffic-light__item_red_on {
@@ -145,7 +202,7 @@ export default {
 }
 
 .traffic-light__item_yellow_off {
-  background: hsl(50, 30%, 50%);
+  background: hsl(50, 100%, 15%);
 }
 
 .traffic-light__item_yellow_on {
@@ -153,7 +210,7 @@ export default {
 }
 
 .traffic-light__item_green_off {
-  background: hsl(100, 30%, 50%);
+  background: hsl(100, 100%, 15%);
 }
 
 .traffic-light__item_green_on {
@@ -169,43 +226,43 @@ export default {
   animation: pulse-yellow 1s ease infinite;
 }
 
-.traffic-light__item_pulse_green{
+.traffic-light__item_pulse_green {
   animation: pulse-green 1s ease infinite;
 }
 
 @keyframes pulse-red {
   0% {
-    background: hsl(0, 30%, 50%);
+    background: hsl(0, 100%, 15%);
   }
   50% {
     background: hsl(0, 100%, 50%);
   }
   100% {
-    background: hsl(0, 30%, 50%);
+    background: hsl(0, 100%, 15%);
   }
 }
 
 @keyframes pulse-yellow {
   0% {
-    background: hsl(50, 30%, 50%);
+    background: hsl(50, 100%, 15%);
   }
   50% {
     background: hsl(50, 100%, 50%);
   }
   100% {
-    background: hsl(50, 30%, 50%);
+    background: hsl(50, 100%, 15%);
   }
 }
 
 @keyframes pulse-green {
   0% {
-    background: hsl(100, 30%, 50%);
+    background: hsl(100, 100%, 15%);
   }
   50% {
     background: hsl(100, 100%, 50%);
   }
   100% {
-    background: hsl(100, 30%, 50%);
+    background: hsl(100, 100%, 15%);
   }
 }
 </style>
