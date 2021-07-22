@@ -41,8 +41,6 @@ export default {
     this.pulse = false;
     clearTimeout(this.routeTimerId);
     clearTimeout(this.secondsTimerId);
-    clearTimeout(this.secondsTimerId)
-    clearTimeout(this.secondsTimerId)
     next()
   },
   beforeMount() {
@@ -64,11 +62,9 @@ export default {
     },
     changeColor(route, time = 0) {
       if (!time) {
-        console.log('time')
         clearTimeout(this.routeTimerId)
         this.routeReplace(route)
       } else {
-        console.log('route')
         this.routeTimerId = setTimeout(this.routeReplace, time, route)
       }
     },
@@ -144,14 +140,11 @@ export default {
 .traffic-light {
   display: flex;
   justify-content: center;
+  align-items: center;
   height: 100vh;
-  background: rgb(253, 255, 163);
-  background: linear-gradient(90deg, #94c1b7 0%, rgb(255, 255, 255) 50%, #94c1b7 100%);
-  background: url("https://images.unsplash.com/photo-1563089145-599997674d42?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80");
-  background: url("https://images.unsplash.com/photo-1523821741446-edb2b68bb7a0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80");
+  background-image: url("https://images.unsplash.com/photo-1523821741446-edb2b68bb7a0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80");
   background-size: cover;
   background-position: center;
-  align-items: center;
 }
 
 .traffic-light__wrap {
@@ -163,8 +156,6 @@ export default {
   border-radius: 20px;
   padding: 10px;
   height: 85%;
-  -webkit-box-shadow: 0px 0px 100px 10px rgba(255, 255, 255, 0.75);
-  -moz-box-shadow: 0px 0px 100px 10px rgba(255, 255, 255, 0.75);
   box-shadow: 0px 0px 100px 10px rgba(255, 255, 255, 0.75);
 }
 
