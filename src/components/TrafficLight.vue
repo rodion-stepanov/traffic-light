@@ -51,6 +51,7 @@ export default {
       this.pulse = localStorage.pulse;
     }
     localStorage.light = this.light
+    localStorage.pulse = this.pulse
   },
   methods: {
     routeReplace(route) {
