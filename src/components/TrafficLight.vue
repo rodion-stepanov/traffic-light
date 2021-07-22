@@ -147,6 +147,10 @@ export default {
   height: 100vh;
   background: rgb(253, 255, 163);
   background: linear-gradient(90deg, #94c1b7 0%, rgb(255, 255, 255) 50%, #94c1b7 100%);
+  background: url("https://images.unsplash.com/photo-1563089145-599997674d42?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80");
+  background: url("https://images.unsplash.com/photo-1523821741446-edb2b68bb7a0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80");
+  background-size: cover;
+  background-position: center;
   align-items: center;
 }
 
@@ -159,6 +163,9 @@ export default {
   border-radius: 20px;
   padding: 10px;
   height: 85%;
+  -webkit-box-shadow: 0px 0px 100px 10px rgba(255, 255, 255, 0.75);
+  -moz-box-shadow: 0px 0px 100px 10px rgba(255, 255, 255, 0.75);
+  box-shadow: 0px 0px 100px 10px rgba(255, 255, 255, 0.75);
 }
 
 .traffic-light__item {
@@ -199,6 +206,7 @@ export default {
 
 .traffic-light__item_red_on {
   background: hsl(0, 100%, 50%);
+  box-shadow: 0px 0px 10px 2px hsla(0, 100%, 50%, 0.75);
 }
 
 .traffic-light__item_yellow_off {
@@ -207,6 +215,7 @@ export default {
 
 .traffic-light__item_yellow_on {
   background: hsl(50, 100%, 50%);
+  box-shadow: 0px 0px 10px 2px hsla(50, 100%, 50%, 0.75);
 }
 
 .traffic-light__item_green_off {
@@ -215,6 +224,7 @@ export default {
 
 .traffic-light__item_green_on {
   background: hsl(100, 100%, 50%);
+  box-shadow: 0px 0px 10px 2px hsla(100, 100%, 50%, 0.75);
 }
 
 
