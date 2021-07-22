@@ -23,4 +23,4 @@
     + npm install
 
 3. Запустить:
-    + npm run serve
+    + npm run start
