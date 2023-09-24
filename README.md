@@ -17,7 +17,7 @@
 
 ## Установка
 1. Клонирование репозитория:
-    + git clone https://github.com/Rodion257/traffic-light.git
+    + git clone https://github.com/rodion-stepanov/traffic-light.git
 
 2. Установить зависимости:
     + npm install
